@@ -72,16 +72,28 @@ def gradio_predict(text, model_name):
 iface = gr.Interface(
     fn=gradio_predict,
     inputs=[
-        gr.Textbox(lines=4, label="Enter text"),
+        gr.Textbox(lines=4, label="Enter text", placeholder="Type or paste your news/article here..."),
         gr.Dropdown(choices=list(MODEL_PATHS.keys()), value="student", label="Select model")
     ],
     outputs=[
         gr.Label(num_top_classes=4, label="Soft label (class probabilities)"),
         gr.Textbox(label="Prediction time")
     ],
-    title="Text Classification - Multi Model",
-    description="Select a model and enter text to see class probabilities and prediction time.",
-    allow_flagging="never"
+    title="Text Classification",
+    description="<b>Text Classification Demo</b><br>Select a model and enter text to see class probabilities and prediction time.<br>Supports multiple models.",
+    allow_flagging="never",
+    theme=gr.themes.Soft(),
+    css="""
+    .gradio-container {background: #23272f; color: #e6e6e6;}
+    .gr-button {font-size: 18px; background: #6ec1e4 !important; color: #23272f !important;}
+    .gr-button:active, .gr-button:focus {background: #4fa3c7 !important;}
+    .gr-textbox textarea {font-size: 16px; background: #2c313a; color: #e6e6e6;}
+    .gr-label {font-size: 18px;}
+    .gr-panel, .gr-box, .gr-block {background: #2c313a !important;}
+    .gr-input, .gr-dropdown {background: #2c313a !important; color: #e6e6e6 !important;}
+    h1, .gr-title {font-size: 2.8rem !important; font-weight: 800 !important;}
+    .gr-description, .gr-markdown {font-size: 1.35rem !important;}
+    """
 )
 
-iface.launch(share=True) 
+iface.launch(share=False) 
