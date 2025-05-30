@@ -1,0 +1,10 @@
+*.pth
+*.npy
+pycache/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+*.pyz
+.gradio/
