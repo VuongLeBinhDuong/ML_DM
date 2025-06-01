@@ -1,0 +1,24 @@
+import torch
+import torch.nn as nn
+
+class BiLSTM(nn.Module):
+    def __init__(self, vocab_size, embd_dim, hidden_dim, output_dim, num_layers=1):
+        super(BiLSTM, self).__init__()
+        self.embedding = nn.Embedding(vocab_size, embd_dim, padding_idx=0)  # Using 0 as default padding_idx
+        self.bilstm = nn.LSTM(embd_dim, hidden_dim, num_layers, batch_first=True, bidirectional=True)
+        self.dropout = nn.Dropout(0.25)
+        self.dense = nn.Linear(hidden_dim * 2, output_dim)  # *2 for bidirectional
+        
+    def forward(self, x):
+        embedded = self.embedding(x)
+        bilstm_out, _ = self.bilstm(embedded)
+        last_hidden = self.dropout(bilstm_out[:, -1, :])  # Lấy output cuối
+        output = self.dense(last_hidden)
+        return output
+
+def load_model(model_path, device):
+    model = BiLSTM(vocab_size=30522, embd_dim=64, hidden_dim=256, output_dim=4)
+    model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
+    model.to(device)
+    model.eval()
+    return model, device 

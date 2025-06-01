@@ -27,7 +27,7 @@ def load_model(path, device):
         num_classes=4,
         tokenizer=tokenizer
     ).to(device)
-    checkpoint = torch.load(path, map_location=device)
+    checkpoint = torch.load(path, map_location=device, weights_only=True)
     model.load_state_dict(checkpoint['model_state_dict'])
     model.eval()
     return model, tokenizer 
